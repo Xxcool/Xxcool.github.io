@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>uni-app开发音乐小程序</title>
+    <link href="/2021/01/20/uni-app%E5%BC%80%E5%8F%91%E9%9F%B3%E4%B9%90%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
+    <url>/2021/01/20/uni-app%E5%BC%80%E5%8F%91%E9%9F%B3%E4%B9%90%E5%B0%8F%E7%A8%8B%E5%BA%8F/</url>
+    
+    <content type="html"><![CDATA[<p>基于uni-app开发的一款关于音乐的移动端项目/小程序</p><a id="more"></a><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>一直有在了解小程序，然后通过uni-app一套代码多端，根据相关资料仿写了音乐小程序，学习学习 (^o^)/~<br>扫码访问</p><p><img src="https://github.com/Xxcool/music/blob/main/static/images/music.png"></p><h4 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h4><p>vue vuex uni-app</p><h4 id="接口文档"><a href="#接口文档" class="headerlink" title="接口文档"></a>接口文档</h4><p>网易云音乐公共接口<br><a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">https://binaryify.github.io/NeteaseCloudMusicApi/#/</a></p><h4 id="安装教程"><a href="#安装教程" class="headerlink" title="安装教程"></a>安装教程</h4><p>git clone 本项目 然后拖动到Hbuild X中 运行查看 移动端/微信小程序(需要将manifest.json中的微信小程序配置中的Appid修改为自己的)</p><h4 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h4><ol><li>音乐bannel轮播</li><li>推荐歌单 swiper形式呈现</li><li>推荐Mv列表 swiper形式呈现</li><li>歌手榜 swiper形式呈现</li><li>歌手描述 歌手单曲 歌手mv</li><li>精彩节目推荐</li><li>各大地区榜单排行 榜单详情</li><li>mv详情 mv分类(最新mv mv排行 推荐mv) 类似mv查看</li><li>歌曲播放 歌曲评论 热门评论</li><li>搜索歌曲 热门搜索 搜索记录</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>uni-app, 小程序</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>uni-app</tag>
+      
+      <tag>小程序</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>redux持久化插件-解决redux数据刷新页面数据丢失问题</title>
     <link href="/2020/10/21/redux%E6%8C%81%E4%B9%85%E5%8C%96%E6%8F%92%E4%BB%B6-%E8%A7%A3%E5%86%B3redux%E6%95%B0%E6%8D%AE%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98/"/>
     <url>/2020/10/21/redux%E6%8C%81%E4%B9%85%E5%8C%96%E6%8F%92%E4%BB%B6-%E8%A7%A3%E5%86%B3redux%E6%95%B0%E6%8D%AE%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98/</url>
