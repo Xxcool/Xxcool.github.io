@@ -254,12 +254,7 @@ body a:hover {
 }
 img[srcset] {
   object-fit: cover;
-  /* width: 100%; */
-}
-.post-content img {
-    margin: 0 auto;
-    display: block;
-    border: 1px solid #ddd;
+  width: 100%;
 }
 *[align="left"] {
   text-align: left;

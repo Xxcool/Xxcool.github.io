@@ -364,37 +364,6 @@ serviceWorker.unregister();</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>解决Element-UI 侧边栏页面刷新后不高亮显示的问题</title>
-    <url>/2020/09/07/%E8%A7%A3%E5%86%B3Element-UI-%E4%BE%A7%E8%BE%B9%E6%A0%8F%E9%A1%B5%E9%9D%A2%E5%88%B7%E6%96%B0%E5%90%8E%E4%B8%8D%E9%AB%98%E4%BA%AE%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>最近在写一个后台管理系统，用的vue+element，侧边栏导航的时候路由跳转没有问题，但是页面刷新发现侧边栏的选中状态(高亮显示)没有了，其实问题很简单。</p>
-<a id="more"></a>
-
-<h2 id="例如："><a href="#例如：" class="headerlink" title="例如："></a>例如：</h2><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">el-menu</span> </span>
-<span class="hljs-tag">        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;el-menu-vertical-demo&quot;</span> </span>
-<span class="hljs-tag">        <span class="hljs-attr">:default-active</span>=<span class="hljs-string">&quot;$route.path&quot;</span> </span>
-<span class="hljs-tag">        <span class="hljs-attr">router</span></span>
-<span class="hljs-tag">     &gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/home&quot;</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;iconfont icon-order&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;title&quot;</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/Goods/GoodsManagement&quot;</span>&gt;</span>        
-        <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;iconfont icon-goods&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;title&quot;</span>&gt;</span>商品管理<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">el-menu</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></code></pre>
-<p>启用router模式，启用该模式会在激活导航时以 index 作为 path 进行路由跳转，所以将el-menu-item的index设置成了path路由，default-active则是当前激活菜单的index，将default-active绑定为$route.path，这样即使刷新也不会失去高亮显示。</p>
-]]></content>
-      <categories>
-        <category>Element</category>
-      </categories>
-      <tags>
-        <tag>Element-UI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>vue文件上传, 引用ali-oss</title>
     <url>/2020/08/18/vue%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E5%BC%95%E7%94%A8ali-oss/</url>
     <content><![CDATA[<p>在之前的开发当中都是后台处理上传，前端负责上传接口调用，一直也没涉及和处理到直传到阿里云对象存储服务（oss），网上查阅了一些相关的资料，将个人开发中所遇到的问题和心得，一起分享。</p>
@@ -573,6 +542,37 @@ serviceWorker.unregister();</code></pre>
       </categories>
       <tags>
         <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决Element-UI 侧边栏页面刷新后不高亮显示的问题</title>
+    <url>/2020/09/07/%E8%A7%A3%E5%86%B3Element-UI-%E4%BE%A7%E8%BE%B9%E6%A0%8F%E9%A1%B5%E9%9D%A2%E5%88%B7%E6%96%B0%E5%90%8E%E4%B8%8D%E9%AB%98%E4%BA%AE%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>最近在写一个后台管理系统，用的vue+element，侧边栏导航的时候路由跳转没有问题，但是页面刷新发现侧边栏的选中状态(高亮显示)没有了，其实问题很简单。</p>
+<a id="more"></a>
+
+<h2 id="例如："><a href="#例如：" class="headerlink" title="例如："></a>例如：</h2><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">el-menu</span> </span>
+<span class="hljs-tag">        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;el-menu-vertical-demo&quot;</span> </span>
+<span class="hljs-tag">        <span class="hljs-attr">:default-active</span>=<span class="hljs-string">&quot;$route.path&quot;</span> </span>
+<span class="hljs-tag">        <span class="hljs-attr">router</span></span>
+<span class="hljs-tag">     &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/home&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;iconfont icon-order&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;title&quot;</span>&gt;</span>首页<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/Goods/GoodsManagement&quot;</span>&gt;</span>        
+        <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;iconfont icon-goods&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;title&quot;</span>&gt;</span>商品管理<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">el-menu</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></code></pre>
+<p>启用router模式，启用该模式会在激活导航时以 index 作为 path 进行路由跳转，所以将el-menu-item的index设置成了path路由，default-active则是当前激活菜单的index，将default-active绑定为$route.path，这样即使刷新也不会失去高亮显示。</p>
+]]></content>
+      <categories>
+        <category>Element</category>
+      </categories>
+      <tags>
+        <tag>Element-UI</tag>
       </tags>
   </entry>
 </search>
