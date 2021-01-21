@@ -274,7 +274,8 @@ serviceWorker.unregister();</code></pre>
     <content><![CDATA[<p>基于uni-app开发的一款关于音乐的移动端项目/小程序</p>
 <a id="more"></a>
 
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>一直有在了解小程序，然后通过uni-app一套代码多端，根据相关资料仿写了音乐小程序，学习学习 (^o^)/~<br>扫码访问</p>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>一直有在了解uni-app，一套代码多端运行，最近抽空通过uni-app，根据相关技术资料写了小型音乐demo，学习学习 (^o^)/~</p>
+<p>扫码访问</p>
 <img src="/2021/01/20/uni-app%E5%BC%80%E5%8F%91%E9%9F%B3%E4%B9%90%E5%B0%8F%E7%A8%8B%E5%BA%8F/music.png" height="260px" width="260px">
 
 <h4 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h4><p>vue vuex uni-app</p>
