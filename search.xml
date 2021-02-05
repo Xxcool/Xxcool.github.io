@@ -27,6 +27,65 @@
       </tags>
   </entry>
   <entry>
+    <title>redux持久化插件-解决redux数据刷新页面数据丢失问题</title>
+    <url>/2020/10/21/redux%E6%8C%81%E4%B9%85%E5%8C%96%E6%8F%92%E4%BB%B6-%E8%A7%A3%E5%86%B3redux%E6%95%B0%E6%8D%AE%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<blockquote>
+<p>在使用redux的时候，对数据进行全局的状态管理，会发现和vuex一样会出现刷新之后数据丢失的问题，使用redux-persist插件进行持久化数据存储 。<br>通常我们会使用sessionStorage或者localStorage来进行数据存储，但既然我们使用了redux来管理和存储全局数据，此时再使用sessionStorage或者localStorage存储，感觉会本末倒置，而且还增加了工作量。<br>这个时候 redux-persist，满足你的需求，它结合redux将store中的数据缓存到浏览器的sessionStorage或者localStorage中。</p>
+</blockquote>
+<h1 id="redux-persist持久化插件"><a href="#redux-persist持久化插件" class="headerlink" title="redux-persist持久化插件"></a>redux-persist持久化插件</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><pre><code class="hljs dockerfile">yarn <span class="hljs-keyword">add</span><span class="bash"> redux-persist --save</span></code></pre>
+<h2 id="2-在store-js里面引入，存储到storageSession"><a href="#2-在store-js里面引入，存储到storageSession" class="headerlink" title="2.在store.js里面引入，存储到storageSession"></a>2.在store.js里面引入，存储到storageSession</h2><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;createStore,applyMiddleware&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>
+<span class="hljs-keyword">import</span> thunk <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-thunk&#x27;</span>
+<span class="hljs-keyword">import</span> reducer <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./reducer&#x27;</span>
+<span class="hljs-keyword">import</span> &#123;persistStore, persistReducer&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-persist&#x27;</span>;
+<span class="hljs-comment">//  存储机制，当前使用sessionStorage, 可换成localStorage</span>
+<span class="hljs-keyword">import</span> storageSession <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-persist/lib/storage/session&#x27;</span>
+
+<span class="hljs-keyword">const</span> persistConfig = &#123;  
+  key: <span class="hljs-string">&#x27;root&#x27;</span>, <span class="hljs-comment">// 必须有的  </span>
+  storage:storageSession, <span class="hljs-comment">// 缓存机制  </span>
+  <span class="hljs-comment">// blacklist: [&#x27;loginStatus&#x27;] reducer 里不持久化的数据,除此外均为持久化数据  </span>
+  whitelist: [<span class="hljs-string">&#x27;loginStatus&#x27;</span>] <span class="hljs-comment">// reducer 里持久化的数据,除此外均为不持久化数据</span>
+&#125;
+
+<span class="hljs-keyword">const</span> persistedReducer = persistReducer(persistConfig, reducer)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> () =&gt; &#123;  
+  <span class="hljs-keyword">let</span> store = createStore(persistedReducer, applyMiddleware(thunk));  
+  <span class="hljs-keyword">let</span> persistor = persistStore(store);  
+  <span class="hljs-keyword">return</span> &#123; store, persistor &#125;;
+&#125;;</code></pre>
+<h2 id="3-入口文件index-js，将PersistGate标签作为父标签"><a href="#3-入口文件index-js，将PersistGate标签作为父标签" class="headerlink" title="3.入口文件index.js，将PersistGate标签作为父标签"></a>3.入口文件index.js，将PersistGate标签作为父标签</h2><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; HashRouter &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-dom&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; Provider &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-redux&quot;</span>;
+<span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./store/index&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; PersistGate &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-persist/integration/react&#x27;</span>
+<span class="hljs-keyword">import</span> &#123; persistor &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./store/index&quot;</span>;
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./App.js&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> serviceWorker <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./serviceWorker&quot;</span>;
+ReactDOM.render(  
+  &lt;HashRouter&gt;    
+    &lt;Provider store=&#123;store&#125;&gt;      
+      &lt;PersistGate loading=&#123;<span class="hljs-literal">null</span>&#125; persistor=&#123;persistor&#125;&gt;        
+         &lt;App /&gt;      
+    &lt;/PersistGate&gt;    
+    &lt;/Provider&gt;  
+  &lt;/HashRouter&gt;,  
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;root&quot;</span>)
+);
+serviceWorker.unregister();</code></pre>
+<p>这就完成了通过redux-persist实现redux持久化本地数据存储。<br><img src="/2020/10/21/redux%E6%8C%81%E4%B9%85%E5%8C%96%E6%8F%92%E4%BB%B6-%E8%A7%A3%E5%86%B3redux%E6%95%B0%E6%8D%AE%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98/demo.png">  </p>
+]]></content>
+      <categories>
+        <category>redux</category>
+      </categories>
+      <tags>
+        <tag>react</tag>
+        <tag>redux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>js计算精度丢失,公共方法封装</title>
     <url>/2020/08/18/js%E8%AE%A1%E7%AE%97%E7%B2%BE%E5%BA%A6%E4%B8%A2%E5%A4%B1-%E5%85%AC%E5%85%B1%E6%96%B9%E6%B3%95%E5%B0%81%E8%A3%85/</url>
     <content><![CDATA[<p>最近做后台管理时候，有大量的输入计算，但是js本身计算会存在精度丢失，于是封装了一个公用的方法，全局使用</p>
@@ -210,99 +269,6 @@ const addCustomize = () =&gt; (<span class="hljs-built_in">config</span>) =&gt; 
       </tags>
   </entry>
   <entry>
-    <title>redux持久化插件-解决redux数据刷新页面数据丢失问题</title>
-    <url>/2020/10/21/redux%E6%8C%81%E4%B9%85%E5%8C%96%E6%8F%92%E4%BB%B6-%E8%A7%A3%E5%86%B3redux%E6%95%B0%E6%8D%AE%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<blockquote>
-<p>在使用redux的时候，对数据进行全局的状态管理，会发现和vuex一样会出现刷新之后数据丢失的问题，使用redux-persist插件进行持久化数据存储 。<br>通常我们会使用sessionStorage或者localStorage来进行数据存储，但既然我们使用了redux来管理和存储全局数据，此时再使用sessionStorage或者localStorage存储，感觉会本末倒置，而且还增加了工作量。<br>这个时候 redux-persist，满足你的需求，它结合redux将store中的数据缓存到浏览器的sessionStorage或者localStorage中。</p>
-</blockquote>
-<h1 id="redux-persist持久化插件"><a href="#redux-persist持久化插件" class="headerlink" title="redux-persist持久化插件"></a>redux-persist持久化插件</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><pre><code class="hljs dockerfile">yarn <span class="hljs-keyword">add</span><span class="bash"> redux-persist --save</span></code></pre>
-<h2 id="2-在store-js里面引入，存储到storageSession"><a href="#2-在store-js里面引入，存储到storageSession" class="headerlink" title="2.在store.js里面引入，存储到storageSession"></a>2.在store.js里面引入，存储到storageSession</h2><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;createStore,applyMiddleware&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>
-<span class="hljs-keyword">import</span> thunk <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-thunk&#x27;</span>
-<span class="hljs-keyword">import</span> reducer <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./reducer&#x27;</span>
-<span class="hljs-keyword">import</span> &#123;persistStore, persistReducer&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-persist&#x27;</span>;
-<span class="hljs-comment">//  存储机制，当前使用sessionStorage, 可换成localStorage</span>
-<span class="hljs-keyword">import</span> storageSession <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-persist/lib/storage/session&#x27;</span>
-
-<span class="hljs-keyword">const</span> persistConfig = &#123;  
-  key: <span class="hljs-string">&#x27;root&#x27;</span>, <span class="hljs-comment">// 必须有的  </span>
-  storage:storageSession, <span class="hljs-comment">// 缓存机制  </span>
-  <span class="hljs-comment">// blacklist: [&#x27;loginStatus&#x27;] reducer 里不持久化的数据,除此外均为持久化数据  </span>
-  whitelist: [<span class="hljs-string">&#x27;loginStatus&#x27;</span>] <span class="hljs-comment">// reducer 里持久化的数据,除此外均为不持久化数据</span>
-&#125;
-
-<span class="hljs-keyword">const</span> persistedReducer = persistReducer(persistConfig, reducer)
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> () =&gt; &#123;  
-  <span class="hljs-keyword">let</span> store = createStore(persistedReducer, applyMiddleware(thunk));  
-  <span class="hljs-keyword">let</span> persistor = persistStore(store);  
-  <span class="hljs-keyword">return</span> &#123; store, persistor &#125;;
-&#125;;</code></pre>
-<h2 id="3-入口文件index-js，将PersistGate标签作为父标签"><a href="#3-入口文件index-js，将PersistGate标签作为父标签" class="headerlink" title="3.入口文件index.js，将PersistGate标签作为父标签"></a>3.入口文件index.js，将PersistGate标签作为父标签</h2><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>;
-<span class="hljs-keyword">import</span> &#123; HashRouter &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-dom&quot;</span>;
-<span class="hljs-keyword">import</span> &#123; Provider &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-redux&quot;</span>;
-<span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./store/index&quot;</span>;
-<span class="hljs-keyword">import</span> &#123; PersistGate &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-persist/integration/react&#x27;</span>
-<span class="hljs-keyword">import</span> &#123; persistor &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./store/index&quot;</span>;
-<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./App.js&quot;</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> serviceWorker <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./serviceWorker&quot;</span>;
-ReactDOM.render(  
-  &lt;HashRouter&gt;    
-    &lt;Provider store=&#123;store&#125;&gt;      
-      &lt;PersistGate loading=&#123;<span class="hljs-literal">null</span>&#125; persistor=&#123;persistor&#125;&gt;        
-         &lt;App /&gt;      
-    &lt;/PersistGate&gt;    
-    &lt;/Provider&gt;  
-  &lt;/HashRouter&gt;,  
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;root&quot;</span>)
-);
-serviceWorker.unregister();</code></pre>
-<p>这就完成了通过redux-persist实现redux持久化本地数据存储。<br><img src="/2020/10/21/redux%E6%8C%81%E4%B9%85%E5%8C%96%E6%8F%92%E4%BB%B6-%E8%A7%A3%E5%86%B3redux%E6%95%B0%E6%8D%AE%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98/demo.png">  </p>
-]]></content>
-      <categories>
-        <category>redux</category>
-      </categories>
-      <tags>
-        <tag>react</tag>
-        <tag>redux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>uni-app开发音乐小程序</title>
-    <url>/2021/01/20/uni-app%E5%BC%80%E5%8F%91%E9%9F%B3%E4%B9%90%E5%B0%8F%E7%A8%8B%E5%BA%8F/</url>
-    <content><![CDATA[<p>基于uni-app开发的一款关于音乐的移动端项目/小程序</p>
-<a id="more"></a>
-
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>一直有在了解uni-app，一套代码多端运行，最近抽空通过uni-app，根据相关技术资料写了小型音乐demo，学习学习 (^o^)/~</p>
-<p>扫码访问</p>
-<img src="/2021/01/20/uni-app%E5%BC%80%E5%8F%91%E9%9F%B3%E4%B9%90%E5%B0%8F%E7%A8%8B%E5%BA%8F/music.png" height="260px" width="260px">
-
-<h4 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h4><p>vue vuex uni-app</p>
-<h4 id="接口文档"><a href="#接口文档" class="headerlink" title="接口文档"></a>接口文档</h4><p>网易云音乐公共接口<br><a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">https://binaryify.github.io/NeteaseCloudMusicApi/#/</a></p>
-<h4 id="安装教程"><a href="#安装教程" class="headerlink" title="安装教程"></a>安装教程</h4><p>git clone 本项目 然后拖动到Hbuild X中 运行查看 移动端/微信小程序(需要将manifest.json中的微信小程序配置中的Appid修改为自己的)</p>
-<h4 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h4><ol>
-<li>音乐bannel轮播</li>
-<li>推荐歌单 swiper形式呈现</li>
-<li>推荐Mv列表 swiper形式呈现</li>
-<li>歌手榜 swiper形式呈现</li>
-<li>歌手描述 歌手单曲 歌手mv</li>
-<li>精彩节目推荐</li>
-<li>各大地区榜单排行 榜单详情</li>
-<li>mv详情 mv分类(最新mv mv排行 推荐mv) 类似mv查看</li>
-<li>歌曲播放 歌曲评论 热门评论</li>
-<li>搜索歌曲 热门搜索 搜索记录</li>
-</ol>
-]]></content>
-      <categories>
-        <category>uni-app, 小程序</category>
-      </categories>
-      <tags>
-        <tag>uni-app</tag>
-        <tag>小程序</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>utils-工具函数封装</title>
     <url>/2020/08/17/utils-%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0%E5%B0%81%E8%A3%85/</url>
     <content><![CDATA[<p>在实际开发中，经常会遇到导出Excel之类的需求，一般都是后台直接给个接口，前端进行参数的拼接，点击拼接好的url打开新的窗口进行下载。但是，有时候会遇到有很多的参数，这样一来拼接起来可能密密麻麻，所以可以使用函数进行转换，传入对应的参数，这样写的人也不头疼，看的人也舒服。show code！</p>
@@ -339,28 +305,37 @@ serviceWorker.unregister();</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>vue中使用qs插件</title>
-    <url>/2020/09/07/vue%E4%B8%AD%E4%BD%BF%E7%94%A8qs%E6%8F%92%E4%BB%B6/</url>
-    <content><![CDATA[<p>之前用Vue+element写了一个后台管理系统，在使用axios请求数据传参时无法正常的获取数据，百度了一些资料，发现原因是传递参数要将参数序列化。于是使用了qs插件，简单来说，qs 是一个增加了一些安全性的查询字符串解析和序列化字符串的库。</p>
+    <title>uni-app开发音乐小程序</title>
+    <url>/2021/01/20/uni-app%E5%BC%80%E5%8F%91%E9%9F%B3%E4%B9%90%E5%B0%8F%E7%A8%8B%E5%BA%8F/</url>
+    <content><![CDATA[<p>基于uni-app开发的一款关于音乐的移动端项目/小程序</p>
 <a id="more"></a>
 
-<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> qs</code></pre>
-<h2 id="在main-js中引入qs，并配置全局"><a href="#在main-js中引入qs，并配置全局" class="headerlink" title="在main.js中引入qs，并配置全局"></a>在main.js中引入qs，并配置全局</h2><pre><code class="hljs elm"><span class="hljs-keyword">import</span> qs <span class="hljs-keyword">as</span> &quot;qs&quot;
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>一直有在了解uni-app，一套代码多端运行，最近抽空通过uni-app，根据相关技术资料写了小型音乐demo，学习学习 (^o^)/~</p>
+<p>扫码访问</p>
+<img src="/2021/01/20/uni-app%E5%BC%80%E5%8F%91%E9%9F%B3%E4%B9%90%E5%B0%8F%E7%A8%8B%E5%BA%8F/music.png" height="260px" width="260px">
 
-配全局属性配置，在任意组件内可以使用this.$qs获取qs对象 
-<span class="hljs-type">Vue</span>.proto<span class="hljs-keyword">type</span>.$qs = qs</code></pre>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><pre><code class="hljs qml">将对象序列化，多个对象之间用&amp;拼接
-<span class="hljs-keyword">let</span> params = qs.stringify(&#123;
-    <span class="hljs-attribute">id:</span><span class="hljs-string"> 1, </span>
-<span class="hljs-string">    value</span>: <span class="hljs-string">&quot;手机&quot;</span>
-&#125;)
-
-* qs.parse()和qs.stringify()相反，是将序列化的内容解析成对象的形式,</code></pre>]]></content>
+<h4 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h4><p>vue vuex uni-app</p>
+<h4 id="接口文档"><a href="#接口文档" class="headerlink" title="接口文档"></a>接口文档</h4><p>网易云音乐公共接口<br><a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">https://binaryify.github.io/NeteaseCloudMusicApi/#/</a></p>
+<h4 id="安装教程"><a href="#安装教程" class="headerlink" title="安装教程"></a>安装教程</h4><p>git clone 本项目 然后拖动到Hbuild X中 运行查看 移动端/微信小程序(需要将manifest.json中的微信小程序配置中的Appid修改为自己的)</p>
+<h4 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h4><ol>
+<li>音乐bannel轮播</li>
+<li>推荐歌单 swiper形式呈现</li>
+<li>推荐Mv列表 swiper形式呈现</li>
+<li>歌手榜 swiper形式呈现</li>
+<li>歌手描述 歌手单曲 歌手mv</li>
+<li>精彩节目推荐</li>
+<li>各大地区榜单排行 榜单详情</li>
+<li>mv详情 mv分类(最新mv mv排行 推荐mv) 类似mv查看</li>
+<li>歌曲播放 歌曲评论 热门评论</li>
+<li>搜索歌曲 热门搜索 搜索记录</li>
+</ol>
+]]></content>
       <categories>
-        <category>Vue</category>
+        <category>uni-app, 小程序</category>
       </categories>
       <tags>
-        <tag>vue</tag>
+        <tag>uni-app</tag>
+        <tag>小程序</tag>
       </tags>
   </entry>
   <entry>
@@ -537,6 +512,31 @@ serviceWorker.unregister();</code></pre>
 <h1 id="最后，提交到后台保存文件地址"><a href="#最后，提交到后台保存文件地址" class="headerlink" title="最后，提交到后台保存文件地址"></a>最后，提交到后台保存文件地址</h1><p>  上传到阿里云OSS成功后，会返回文件的地址，提交给后台保存地址就可以了。</p>
 <p><img src="/2020/08/18/vue%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E5%BC%95%E7%94%A8ali-oss/upload.jpg"></p>
 ]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue中使用qs插件</title>
+    <url>/2020/09/07/vue%E4%B8%AD%E4%BD%BF%E7%94%A8qs%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<p>之前用Vue+element写了一个后台管理系统，在使用axios请求数据传参时无法正常的获取数据，百度了一些资料，发现原因是传递参数要将参数序列化。于是使用了qs插件，简单来说，qs 是一个增加了一些安全性的查询字符串解析和序列化字符串的库。</p>
+<a id="more"></a>
+
+<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> qs</code></pre>
+<h2 id="在main-js中引入qs，并配置全局"><a href="#在main-js中引入qs，并配置全局" class="headerlink" title="在main.js中引入qs，并配置全局"></a>在main.js中引入qs，并配置全局</h2><pre><code class="hljs elm"><span class="hljs-keyword">import</span> qs <span class="hljs-keyword">as</span> &quot;qs&quot;
+
+配全局属性配置，在任意组件内可以使用this.$qs获取qs对象 
+<span class="hljs-type">Vue</span>.proto<span class="hljs-keyword">type</span>.$qs = qs</code></pre>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><pre><code class="hljs qml">将对象序列化，多个对象之间用&amp;拼接
+<span class="hljs-keyword">let</span> params = qs.stringify(&#123;
+    <span class="hljs-attribute">id:</span><span class="hljs-string"> 1, </span>
+<span class="hljs-string">    value</span>: <span class="hljs-string">&quot;手机&quot;</span>
+&#125;)
+
+* qs.parse()和qs.stringify()相反，是将序列化的内容解析成对象的形式,</code></pre>]]></content>
       <categories>
         <category>Vue</category>
       </categories>
