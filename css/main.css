@@ -256,6 +256,11 @@ img[srcset] {
   object-fit: cover;
   width: 100%;
 }
+.markdown-body img {
+    display: block;
+    width: 260px;
+    margin: 0 auto;
+}
 *[align="left"] {
   text-align: left;
 }
