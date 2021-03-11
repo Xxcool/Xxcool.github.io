@@ -256,11 +256,7 @@ img[srcset] {
   object-fit: cover;
   width: 100%;
 }
-.markdown-body img {
-    display: block;
-    width: 260px;
-    margin: 0 auto;
-}
+
 *[align="left"] {
   text-align: left;
 }
@@ -844,6 +840,11 @@ img[srcset] {
   line-height: 1.5;
   border-radius: 3px;
   tab-size: 4;
+}
+.markdown-body img {
+    display: block;
+    width: 260px;
+    margin: 0 auto;
 }
 .markdown-body pre code.mermaid > svg {
   min-width: 100%;
